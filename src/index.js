@@ -1,9 +1,13 @@
 import Phaser from "phaser";
+import Moet from "./assets/moet.jpg";
+import {generateXCoord, generateYCoord} from "./randomFunctions.js";
+// vars
+const gameState = {};
 
 const config = {
   type: Phaser.AUTO,
   parent: "phaser-example",
-  width: 800,
+  width: 1000,
   height: 600,
   scene: {
     preload: preload,
@@ -12,16 +16,16 @@ const config = {
   }
 };
 
-const game = new Phaser.Game(config);
+var game = new Phaser.Game(config);
 
 function preload() {
-
+  this.load.image('moet', Moet);
 }
 
 function create() {
-  
+  gameState.moet = this.add.sprite(generateXCoord(), generateYCoord(), 'moet')
 }
 
 function update() {
-
+  gameState.moet.y += 1;
 }
