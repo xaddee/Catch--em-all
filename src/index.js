@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import Moet from "./assets/moet.jpg";
+import Moet from "./assets/moet.png";
 import {generateXCoord, generateYCoord} from "./randomFunctions.js";
 // vars
 const gameState = {};
@@ -29,3 +29,5 @@ function create() {
 function update() {
   gameState.moet.y += 1;
 }
+
+
