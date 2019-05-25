@@ -1,8 +1,14 @@
 import Phaser from "phaser";
 import Moet from "./assets/moet.png";
+import WheelBarrow from "./assets/wheelbarrow.png"
 import {generateXCoord, generateYCoord} from "./randomFunctions.js";
 // vars
 const gameState = {};
+const movementSpeed = 3;
+const numberOfBottles = 5;
+const loopDelay = 150;
+var currentTime = 0;
+
 
 const config = {
   type: Phaser.AUTO,
@@ -19,15 +25,37 @@ const config = {
 var game = new Phaser.Game(config);
 
 function preload() {
+  gameState.moet = new Array();
   this.load.image('moet', Moet);
+  this.load.image('wheelBarrow', WheelBarrow);
 }
 
 function create() {
-  gameState.moet = this.add.sprite(generateXCoord(), generateYCoord(), 'moet')
+  gameState.wheelBarrow = this.add.sprite(300, 300, 'wheelBarrow');
 }
 
 function update() {
-  gameState.moet.y += 1;
+  if (currentTime == loopDelay) {
+    generateBottles(this);
+    currentTime = 0;
+  }
+  currentTime ++;
+
+  moveBottles();
+  
+  
+}
+
+function generateBottles(obj) {
+  for (let index = 0; index < numberOfBottles; index++) {
+    gameState.moet.push(obj.add.sprite(generateXCoord(config.width, 50), generateYCoord(150), 'moet'));
+  }
+}
+
+function moveBottles() {
+  for (let index = 0; index < gameState.moet.length; index++) {
+    gameState.moet[index].y += movementSpeed;
+  }
 }
 
 

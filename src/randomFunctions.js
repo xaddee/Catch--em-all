@@ -1,8 +1,10 @@
 // to do random generator for xCoord and yCoord
-export function generateXCoord (){
-    return 100;
+export function generateXCoord (gameWidth, objWidth){
+   return Math.floor(Math.random() * (gameWidth - objWidth)) + objWidth;
 }
 
-export function generateYCoord (){
-    return 100;
+export function generateYCoord (objHeight){
+    let value = Math.floor(Math.random() * (2 * objHeight));
+    value = -value;
+    return  value;
 }
