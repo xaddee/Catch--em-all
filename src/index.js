@@ -6,12 +6,14 @@ import * as randomFunc from "./randomFunctions.js";
 const gameState = {};
 
 const movementSpeed = 3;
+const wheelBarrowMovementSpeed = 15;
 
 const numberOfBottles = 5;
 
 const loopDelay = 150;
 var currentTime = 0;
 
+var mouseX;
 
 const config = {
   type: Phaser.AUTO,
@@ -41,10 +43,14 @@ function preload() {
 }
 
 function create() {
-  gameState.wheelBarrow = this.physics.add.sprite(300, 300, 'wheelBarrow');
+  gameState.wheelBarrow = this.physics.add.sprite(100, config.height - 59, 'wheelBarrow');
 }
 
 function update() {
+  // get mouse coords
+  mouseX = this.input.mousePointer.x;
+  
+
   if (currentTime == loopDelay) {
     generateBottles(this);
     currentTime = 0;
@@ -52,6 +58,7 @@ function update() {
   currentTime ++;
 
   moveBottles();
+  movewheelBarrow();
   
   
 }
@@ -66,6 +73,10 @@ function moveBottles() {
   for (let index = 0; index < gameState.moet.length; index++) {
     gameState.moet[index].y += movementSpeed;
   }
+}
+
+function movewheelBarrow() {
+  gameState.wheelBarrow.x = mouseX;
 }
 
 
