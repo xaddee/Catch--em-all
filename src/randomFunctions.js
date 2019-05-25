@@ -1,4 +1,3 @@
-// to do random generator for xCoord and yCoord
 export function generateXCoord (gameWidth, objWidth){
    return Math.floor(Math.random() * (gameWidth - objWidth)) + objWidth;
 }

@@ -1,11 +1,14 @@
 import Phaser from "phaser";
 import Moet from "./assets/moet.png";
 import WheelBarrow from "./assets/wheelbarrow.png"
-import {generateXCoord, generateYCoord} from "./randomFunctions.js";
+import * as randomFunc from "./randomFunctions.js";
 // vars
 const gameState = {};
+
 const movementSpeed = 3;
+
 const numberOfBottles = 5;
+
 const loopDelay = 150;
 var currentTime = 0;
 
@@ -15,6 +18,13 @@ const config = {
   parent: "phaser-example",
   width: 1000,
   height: 600,
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { y: 0 },
+      debug: true
+    }
+  },
   scene: {
     preload: preload,
     create: create,
@@ -26,12 +36,12 @@ var game = new Phaser.Game(config);
 
 function preload() {
   gameState.moet = new Array();
-  this.load.image('moet', Moet);
   this.load.image('wheelBarrow', WheelBarrow);
+  this.load.image('moet', Moet);
 }
 
 function create() {
-  gameState.wheelBarrow = this.add.sprite(300, 300, 'wheelBarrow');
+  gameState.wheelBarrow = this.physics.add.sprite(300, 300, 'wheelBarrow');
 }
 
 function update() {
@@ -48,7 +58,7 @@ function update() {
 
 function generateBottles(obj) {
   for (let index = 0; index < numberOfBottles; index++) {
-    gameState.moet.push(obj.add.sprite(generateXCoord(config.width, 50), generateYCoord(150), 'moet'));
+    gameState.moet.push(obj.physics.add.sprite(randomFunc.generateXCoord(config.width, 50), randomFunc.generateYCoord(150), 'moet'));
   }
 }
 
