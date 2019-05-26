@@ -5,9 +5,8 @@ import * as randomFunc from "./randomFunctions.js";
 // vars
 const gameState = {};
 
-const movementSpeed = 3;
-
-const numberOfBottles = 5;
+var movementSpeed = 3;
+var numberOfBottles = 5;
 
 const loopDelay = 150;
 var currentTime = 0;
@@ -28,7 +27,7 @@ const livesString = 'Lives: ';
 
 const config = {
   type: Phaser.AUTO,
-  parent: "phaser-example",
+  parent: "game-container",
   width: 800,
   height: 600,
   physics: {
@@ -42,7 +41,7 @@ const config = {
     preload: preload,
     create: create,
     update: update
-  }
+  },
 };
 
 var game = new Phaser.Game(config);
@@ -77,6 +76,10 @@ function update() {
 
     gameState.scoreText.setText(scoreString + score);
     gameState.livesText.setText(livesString + lives);
+
+    if (score / 1000 != 1 && score > 0) {
+      //makeItHarder();
+    }
   }
 }
 
@@ -102,12 +105,12 @@ function movewheelBarrow () {
 function destroyBottles () {
   for (let index = 0; index < gameState.moet.length; index++) {
 
-    if (gameState.moet[index].y >= config.height) {
+    if (gameState.moet[index].y > config.height) {
 
       let tmpContainer = gameState.moet[index];
       gameState.moet.splice(index, 1);
       tmpContainer.destroy();
-      lives--;
+      //lives--;
     }
   }
 }
@@ -116,5 +119,10 @@ function collideWithWB (wheelBarrow, bottle) {
   score += 100;
   bottle.destroy();
   
+}
+
+function makeItHarder () {
+  movementSpeed += 1;
+  numberOfBottles += 1;
 }
 
