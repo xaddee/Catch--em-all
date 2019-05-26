@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import Moet from "./assets/moet.png";
 import WheelBarrow from "./assets/wheelbarrow.png"
 import Background from "./assets/background.jpg"
+import invisibleObj from "./assets/floor.png"
 import * as randomFunc from "./randomFunctions.js";
 
 // vars
@@ -17,6 +18,9 @@ var currentTime = 0;
 var called = false;
 
 var mouseX;
+
+var gameRunning = true;
+var gameEnds = false;
 
 const wheelBarrowWidth = 200;
 const wheelBarrowHeight = 118;
@@ -39,7 +43,7 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: false
+      debug: true
     }
   },
   scene: {
@@ -52,7 +56,7 @@ const config = {
 var game = new Phaser.Game(config);
 
 function preload() {
-  
+  this.load.image('invisibleObj', invisibleObj);
   this.load.image('wheelBarrow', WheelBarrow);
   this.load.image('moet', Moet);
   this.load.image('background', Background);
@@ -68,14 +72,20 @@ function create() {
 
   gameState.scoreText = this.add.text(32, 24, scoreString + score, {color: '#000000'});
   gameState.livesText = this.add.text(32, 44, livesString + lives, {color: '#000000'});
+
+  gameState.floor = this.physics.add.sprite(400, config.height + 30, 'invisibleObj');
 }
 
 function update() {
   // get mouse coords
-  if (lives > 0) {
+  if (lives == 0) {
+    gameRunning = false;
+    stopBottles();
+    gameEnds = true;
+  } 
+  if (gameRunning ==  true) {
     mouseX = this.input.mousePointer.x;
-    
-
+  
     if (currentTime == loopDelay) {
       generateBottles(this);
       currentTime = 0;
@@ -85,9 +95,6 @@ function update() {
     moveBottles();
     movewheelBarrow();
 
-    gameState.scoreText.setText(scoreString + score);
-    gameState.livesText.setText(livesString + lives);
-
     if (score % 1000 == 0 && score > 0  && called == false) {
       makeItHarder();
       called = true;
@@ -96,6 +103,9 @@ function update() {
       called = false;
     }
   }
+
+  gameState.scoreText.setText(scoreString + score);
+  gameState.livesText.setText(livesString + lives);
 }
 
 function generateBottles (obj) {
@@ -107,7 +117,7 @@ function generateBottles (obj) {
 
   gameState.bottles.children.iterate(function (bottle) {
     obj.physics.add.overlap(gameState.wheelBarrow, bottle, collideWithWB, null, obj);
-    //obj.physics.add.overlap(gameState.floor, bottle, collideWithFloor, null, obj);
+    obj.physics.add.overlap(gameState.floor, bottle, collideWithFloor, null, obj);
   });
 }
 
@@ -115,6 +125,12 @@ function moveBottles () {
 
   gameState.bottles.children.iterate(function (bottle) {
     bottle.setVelocityY(movementSpeed);
+  });
+}
+
+function stopBottles () {
+  gameState.bottles.children.iterate(function (bottle) {
+    bottle.setVelocityY(0);
   });
 }
 
