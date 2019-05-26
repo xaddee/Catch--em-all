@@ -3,7 +3,7 @@ export function generateXCoord (gameWidth, objWidth){
 }
 
 export function generateYCoord (objHeight){
-    let value = Math.floor(Math.random() * (2 * objHeight));
+    let value = Math.floor(Math.random() * (5 * objHeight));
     value = -value;
     return  value;
 }
