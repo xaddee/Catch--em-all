@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Moet from "./assets/moet.png";
-import WheelBarrow from "./assets/1.png"
+import WheelBarrow from "./assets/wheelbarrow.png"
 import Background from "./assets/background1.png"
 import * as randomFunc from "./randomFunctions.js";
 
@@ -8,9 +8,10 @@ import * as randomFunc from "./randomFunctions.js";
 const gameState = {};
 
 var movementSpeed = 150;
+const maxBottles = 10;
 var numberOfBottles = 5;
 
-var loopDelay = 150;
+var loopDelay = 100;
 var currentTime = 0;
 
 var called = false;
@@ -54,12 +55,12 @@ function preload() {
   
   this.load.image('wheelBarrow', WheelBarrow);
   this.load.image('moet', Moet);
-  this.load.image('background', Background);
+  // this.load.image('background', Background);
 }
 
 function create() {
   
-  this.backgroundSprite = this.add.tileSprite(config.width / 2, config.height / 2, 0, 0, 'background');
+  // this.backgroundSprite = this.add.tileSprite(config.width / 2, config.height / 2, 0, 0, 'background');
 
   gameState.bottles = this.add.group();
 
@@ -134,7 +135,6 @@ function collideWithFloor (floor, bottle) {
 
 function makeItHarder () {
   movementSpeed += 30;
-  numberOfBottles += 1;
-  loopDelay -= 5;
+  if (numberOfBottles < maxBottles) numberOfBottles += 1;
 }
 
