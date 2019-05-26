@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import Moet from "./assets/moet.png";
 import WheelBarrow from "./assets/wheelbarrow.png"
-import Background from "./assets/background1.png"
+import Background from "./assets/background.jpg"
 import * as randomFunc from "./randomFunctions.js";
 
 // vars
@@ -55,19 +55,19 @@ function preload() {
   
   this.load.image('wheelBarrow', WheelBarrow);
   this.load.image('moet', Moet);
-  // this.load.image('background', Background);
+  this.load.image('background', Background);
 }
 
 function create() {
   
-  // this.backgroundSprite = this.add.tileSprite(config.width / 2, config.height / 2, 0, 0, 'background');
+  this.backgroundSprite = this.add.tileSprite(config.width / 2, config.height / 2, 0, 0, 'background');
 
   gameState.bottles = this.add.group();
 
   gameState.wheelBarrow = this.physics.add.sprite(wheelBarrowWidth / 2, config.height - wheelBarrowHeight / 2, 'wheelBarrow');
 
-  gameState.scoreText = this.add.text(32, 24, scoreString + score);
-  gameState.livesText = this.add.text(32, 64, livesString + lives);
+  gameState.scoreText = this.add.text(32, 24, scoreString + score, {color: '#000000'});
+  gameState.livesText = this.add.text(32, 44, livesString + lives, {color: '#000000'});
 }
 
 function update() {
@@ -119,7 +119,9 @@ function moveBottles () {
 }
 
 function movewheelBarrow () {
-  gameState.wheelBarrow.x = mouseX;
+  if (mouseX < config.width - wheelBarrowWidth / 3 && mouseX > 0 + wheelBarrowWidth / 3 ) {
+    gameState.wheelBarrow.x = mouseX;
+  }
 }
 
 function collideWithWB (wheelBarrow, bottle) {
